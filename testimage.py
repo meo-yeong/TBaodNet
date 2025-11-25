@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
 import os
-import derainhaze
+import model.derainhaze
 
 
 
