@@ -16,7 +16,8 @@ save_input_path = 'processdata/input'
 
 # 깨끗한 이미지 파일 이름이 저장된 TXT 파일 경로
 # 예: C:/Users/MyUser/Desktop/clean_list.txt
-txt_file_path = 'resized_image_list.txt'
+# (수정됨: preprocessing 폴더 안에 있는 파일을 바라보도록 변경)
+txt_file_path = 'preprocessing/resized_image_list.txt'
 # -------------------------------------------------------------------
 
 # 2. 저장 폴더 준비

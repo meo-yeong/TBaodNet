@@ -4,9 +4,12 @@ import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
 import os
+import sys
+
+# 프로젝트 루트 경로를 sys.path에 추가 (utils 폴더에서 상위 폴더의 모듈을 import 하기 위함)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import model.derainhaze
-
-
 
 def test_single_image(model_weights_path, input_image_path, output_image_path):
     """
@@ -17,11 +20,19 @@ def test_single_image(model_weights_path, input_image_path, output_image_path):
     print(f"사용 디바이스: {device}")
 
     # 모델 초기화 및 디바이스로 이동
-    model = derainhaze.DerainNet().to(device)
+    model = model.derainhaze.DerainNet().to(device)
 
     # 학습된 가중치 불러오기
     try:
-        model.load_state_dict(torch.load(model_weights_path, map_location=device))
+        # 주의: 저장된 파일이 state_dict 형태라고 가정합니다.
+        checkpoint = torch.load(model_weights_path, map_location=device)
+        
+        # 체크포인트가 dict 형태(키값 포함)일 경우 처리
+        if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+            model.load_state_dict(checkpoint['model_state_dict'])
+        else:
+            model.load_state_dict(checkpoint)
+            
         print(f"'{model_weights_path}'에서 모델 가중치를 성공적으로 불러왔습니다.")
     except FileNotFoundError:
         print(f"오류: '{model_weights_path}' 경로에 모델 가중치 파일이 없습니다.")
@@ -34,7 +45,6 @@ def test_single_image(model_weights_path, input_image_path, output_image_path):
     model.eval()
 
     # 이미지 전처리를 위한 변환 정의
-    # PIL 이미지를 Tensor로 변환하고 픽셀 값을 [0, 1] 범위로 정규화
     transform = transforms.Compose([
         transforms.ToTensor()
     ])
@@ -72,14 +82,22 @@ def test_single_image(model_weights_path, input_image_path, output_image_path):
 
 if __name__ == '__main__':
     
-    # 1. 학습된 모델 가중치 파일 경로
-    MODEL_WEIGHTS_PATH = 'derain_model.pth'
+    # 1. 학습된 모델 가중치 파일 경로 (프로젝트 구조에 맞게 수정됨)
+    # 예: pt 폴더 내의 모델 파일
+    MODEL_WEIGHTS_PATH = os.path.join('pt', 'dedrop_derain_dehaze.pt')
 
-    # 2. 비를 제거할 입력 이미지 경로
-    INPUT_IMAGE_PATH = 'test_image.jpg'
+    # 2. 비를 제거할 입력 이미지 경로 (테스트용 이미지)
+    # 예: dataset_split/val/input/8_rain.png (points.py와 동일하게 맞춤)
+    INPUT_IMAGE_PATH = os.path.join('dataset_split', 'val', 'input', '8_rain.png')
 
     # 3. 결과 이미지를 저장할 경로
-    OUTPUT_IMAGE_PATH = 'results/derained_image.png'
+    OUTPUT_IMAGE_PATH = os.path.join('processedImg', 'derained_single_result.png')
     
     # 함수 실행
-    test_single_image(MODEL_WEIGHTS_PATH, INPUT_IMAGE_PATH, OUTPUT_IMAGE_PATH)
+    # (파일이 실제로 존재하는지 확인 후 실행하는 것이 좋습니다)
+    if os.path.exists(INPUT_IMAGE_PATH) and os.path.exists(MODEL_WEIGHTS_PATH):
+        test_single_image(MODEL_WEIGHTS_PATH, INPUT_IMAGE_PATH, OUTPUT_IMAGE_PATH)
+    else:
+        print("🚨 경로 확인 필요:")
+        if not os.path.exists(MODEL_WEIGHTS_PATH): print(f" - 모델 없음: {MODEL_WEIGHTS_PATH}")
+        if not os.path.exists(INPUT_IMAGE_PATH): print(f" - 입력 이미지 없음: {INPUT_IMAGE_PATH}")

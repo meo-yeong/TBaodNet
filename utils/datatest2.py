@@ -9,7 +9,8 @@ input_folder_path = 'processdata/input'
 
 # 정답 이름(gt 이름) 목록이 들어있는 TXT 파일 경로
 # 예: C:/Users/MyUser/Desktop/clean_list.txt
-txt_file_path = 'resized_image_list.txt'
+# (수정됨: preprocessing 폴더 내 파일을 바라보도록 변경)
+txt_file_path = 'preprocessing/resized_image_list.txt'
 # -------------------------------------------------------------------
 
 # 2. 이름 변경 로직
