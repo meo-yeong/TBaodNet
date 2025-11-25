@@ -1,3 +1,45 @@
+사용 시 주의사항 (Precautions)
+이 프로젝트를 실행할 때는 다음 사항들을 반드시 숙지해야 오류 없이 작동합니다.
+
+1. 실행 위치 (Execution Path)
+모든 Python 스크립트는 반드시 프로젝트 최상위 폴더(Root) 에서 실행해야 합니다. 하위 폴더로 이동하여 실행할 경우, model이나 preprocessing 모듈을 찾지 못해 ModuleNotFoundError가 발생합니다.
+
+# 프로젝트 루트에서 실행
+python train/detrain.py
+python utils/points.py
+
+2. 실행 순서 (Workflow)
+데이터셋이 준비되지 않은 상태에서 학습 스크립트를 실행하면 오류가 발생합니다. 아래 순서를 권장합니다.
+
+데이터 준비: utils/downloadYoloData.py 실행 혹은 사용자 데이터 준비 (data/ 폴더)
+
+전처리 (리사이즈): preprocessing/resize.py 실행
+
+이미지를 리사이즈하고 preprocessing/resized_image_list.txt를 생성합니다.
+
+데이터 분할: preprocessing/split_dataset.py 실행
+
+위에서 생성된 목록을 기반으로 dataset_split/ 폴더에 Train/Test/Val 데이터를 분할하여 저장합니다.
+
+모델 학습:
+
+train/detrain.py: 메인 모델 학습 (빠른 테스트용, 데이터 10% 사용)
+
+train/detrainLite2.py: 경량화 모델 전체 학습 (데이터 100% 사용)
+
+평가 및 추론: utils/points.py 또는 utils/pointsLite.py 실행
+
+3. 파일 및 폴더 자동 생성
+학습을 진행하면 pt/ 폴더가 자동 생성되며, 그 안에 학습된 모델 가중치(.pt)가 저장됩니다.
+
+추론을 진행하면 processedImg/ 폴더가 자동 생성되며 결과 이미지가 저장됩니다.
+
+이 폴더들은 .gitignore에 등록되어 있어 Git에는 업로드되지 않습니다.
+
+4. 필수 라이브러리 (Dependencies)
+이 프로젝트는 다음 라이브러리들을 필요로 합니다. 실행 전 설치해주세요.
+pip install torch torchvision opencv-python scikit-image tqdm pillow
+
 ```text
 .
 ├──  .gitignore            # Git 업로드 제외 설정
