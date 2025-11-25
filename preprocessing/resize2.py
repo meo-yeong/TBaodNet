@@ -1,6 +1,6 @@
 import cv2
 import os
-from tqdm import tqdm # 진행 상황 표시를 위해 tqdm 추가
+from tqdm import tqdm  # 진행 상황 표시를 위해 tqdm 추가
 
 def batch_resize_images(input_folder, output_folder, target_width, target_height):
     """
@@ -17,7 +17,12 @@ def batch_resize_images(input_folder, output_folder, target_width, target_height
         print(f"'{output_folder}' 폴더를 생성했습니다.")
 
     # 입력 폴더의 파일 목록을 가져옵니다.
-    file_list = os.listdir(input_folder)
+    try:
+        file_list = os.listdir(input_folder)
+    except FileNotFoundError:
+        print(f"오류: 입력 폴더를 찾을 수 없습니다: {input_folder}")
+        return
+
     print(f"총 {len(file_list)}개의 파일에 대해 리사이즈를 시작합니다.")
 
     # 입력 폴더 내의 모든 파일을 순회합니다.
@@ -47,16 +52,22 @@ def batch_resize_images(input_folder, output_folder, target_width, target_height
     print(f"\n모든 작업이 완료되었습니다. 결과는 '{output_folder}' 폴더에 저장되었습니다.")
 
 
-# --- 사용 방법 ---
-# 1. 원본 이미지가 있는 폴더 경로를 지정합니다.  test train val 순서
-input_directory = "dataset_split/val/gt"
+if __name__ == "__main__":
+    # --- 사용 방법 ---
+    # 1. 원본 이미지가 있는 폴더 경로를 지정합니다. (프로젝트 루트 기준)
+    # 예: dataset_split/val/gt, dataset_split/train/gt 등 변경하며 사용
+    input_directory = "dataset_split/val/gt"
 
-# 2. 리사이즈된 이미지를 저장할 폴더 경로를 지정합니다.
-output_directory = "processdata/val/gt"
+    # 2. 리사이즈된 이미지를 저장할 폴더 경로를 지정합니다.
+    output_directory = "processdata/val/gt"
 
-# 3. 목표 해상도를 지정합니다 (너비, 높이 순).
-width = 360
-height = 240
+    # 3. 목표 해상도를 지정합니다 (너비, 높이 순).
+    width = 360
+    height = 240
 
-# 4. 함수를 실행합니다.
-batch_resize_images(input_directory, output_directory, width, height)
+    # 4. 함수를 실행합니다.
+    # 경로가 실제로 존재하는지 확인 후 실행
+    if os.path.exists(input_directory):
+        batch_resize_images(input_directory, output_directory, width, height)
+    else:
+        print(f"🚨 경로 오류: 입력 폴더가 존재하지 않습니다 -> {input_directory}")

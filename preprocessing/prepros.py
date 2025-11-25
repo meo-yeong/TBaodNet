@@ -39,6 +39,8 @@ class RainDSSynDataset(Dataset):
         self.gt_paths = sorted(list(set(self.gt_paths)))
 
         if not self.gt_paths:
+            # 경로가 비어있을 경우 경고 메시지와 함께 현재 경로 확인 (디버깅용)
+            print(f"[Dataset Error] GT 경로를 찾을 수 없거나 비어있습니다: {os.path.abspath(self.root_gt)}")
             raise RuntimeError(f"[Dataset] GT 이미지가 없습니다: {self.root_gt}")
         print(f"[Dataset] GT 총 이미지 개수: {len(self.gt_paths)}")
 
@@ -68,7 +70,7 @@ class RainDSSynDataset(Dataset):
             print(f"[Dataset] 경고: 짝을 찾지 못한 GT 파일이 {self.unmatched_gts}개 있습니다.")
 
         if not self.pairs:
-            raise RuntimeError(f"[Dataset] 매칭되는 GT-Rain 쌍이 없습니다. 폴더를 확인하세요.")
+            raise RuntimeError(f"[Dataset] 매칭되는 GT-Rain 쌍이 없습니다. 폴더 구조와 파일명을 확인하세요.")
         
         print(f"\n[Dataset] 총 매칭 쌍 개수: {len(self.pairs)}")
         print("[Dataset] 초기화 완료\n")
@@ -109,7 +111,7 @@ class RainDSSynDataset(Dataset):
             }
         except Exception as e:
             print(f"[Dataset] 오류: 이미지 로딩/처리 중 오류 발생 ({os.path.basename(rain_path)}) - {e}")
-            # 오류 발생 시 None을 반환하도록 처리 (DataLoader에서 걸러낼 수 있도록)
+            # 오류 발생 시 None을 반환하도록 처리 (DataLoader에서 걸러낼 수 있도록 collate_fn 필요)
             return None
 
 
