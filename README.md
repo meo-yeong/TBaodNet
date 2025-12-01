@@ -75,4 +75,7 @@ pip install torch torchvision opencv-python scikit-image tqdm pillow
     └──  downloadYoloData.py # 외부 데이터셋(YOLO/COCO) 다운로드 도구
 ```
 ##개발자 
+
 김대영 김동건 이상욱 남현식 정광진
+
+
