@@ -71,4 +71,8 @@ pip install torch torchvision opencv-python scikit-image tqdm pillow
     ├──  testimage.py      # 단일 이미지 추론 테스트
     ├──  datatest.py       # 데이터셋 준비 1: txt 목록에 있는 이미지를 input 폴더로 복사
     ├──  datatest2.py      # 데이터셋 준비 2: 복사된 이미지 파일명 정규화
+
     └──  downloadYoloData.py # 외부 데이터셋(YOLO/COCO) 다운로드 도구
+```
+##개발자 
+김대영 김동건 이상욱 남현식 정광진
