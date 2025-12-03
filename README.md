@@ -77,7 +77,41 @@ pip install torch torchvision opencv-python scikit-image tqdm pillow
 
 ## 개발자 
 
-김대영 김동건 이상욱 남현식 정광진
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/d0gn">
+        <img src="https://github.com/d0gn.png" width="80" style="border-radius:50%"><br/>
+        <sub><b>d0gn</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/meo-yeong">
+        <img src="https://github.com/meo-yeong.png" width="80" style="border-radius:50%"><br/>
+        <sub><b>meo-yeong</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/mizzcereal">
+        <img src="https://github.com/mizzcereal.png" width="80" style="border-radius:50%"><br/>
+        <sub><b>mizzcereal</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/jkjnaver">
+        <img src="https://github.com/jkjnaver.png" width="80" style="border-radius:50%"><br/>
+        <sub><b>jkjnaver</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/sick2024471">
+        <img src="https://github.com/sick2024471.png" width="80" style="border-radius:50%"><br/>
+        <sub><b>sick2024471</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
 
 
 
